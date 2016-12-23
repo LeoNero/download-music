@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title>Download music!</title>
+  </head>
+  <body>
+    
+    <div id="app">
+      <h2>{{ title }}</h2>
+
+      <input type="text" name="search" v-model="search">
+      <button v-on:click="searchMusic">Search!</button>
+
+      <ul>
+        <li v-if="songs.length != 0" v-for="song in songs">
+          {{ song.snippet.title }}
+          <img :src="song.snippet.thumbnails.medium.url">
+          <button v-on:click="downloadSong(song.id.videoId, song.snippet.title)">Download this song!</button>
+        </li>
+      </ul>
+    </div>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/vue@2.1.6/dist/vue.js"></script>
+    <script src="js/index.js"></script>
+  </body>
+</html>
