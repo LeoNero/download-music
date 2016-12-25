@@ -12,3 +12,4 @@ GET /api/download/mp3/:videoId
 ## TODO
 * Pagination
 * Preview audio
+* Improve design
