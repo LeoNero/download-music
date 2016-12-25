@@ -1,6 +1,7 @@
 'use strict';
 
 const fs = require('fs');
+const ffmpeg = require('fluent-ffmpeg');
 const Youtube = require('youtube-node');
 const youtube = new Youtube();
 
@@ -9,7 +10,7 @@ const ytdl = require('youtube-dl');
 youtube.setKey('AIzaSyB1OOSpTREs85WUMvIgJvLTZKye4BVsoFU');
 
 const ApiController = {
-  search(req, res) {
+  search (req, res) {
     let q = req.params.q;
 
     youtube.search(q, 20, (err, result) => {
@@ -26,12 +27,30 @@ const ApiController = {
     });
   },
 
-  download(req, res) {
-    let videoId = req.body.videoId;
-    let videoTitle = req.body.videoTitle;
+  download (req, res) {
+    let videoId = req.params.videoId;
+    let videoTitle = req.params.videoTitle;
     let url = `http://www.youtube.com/watch?v=${videoId}`;
 
-    console.log(url);
+    let stream = ytdl(url, ['-f', 'bestaudio']);
+
+    stream.on('info', info => {
+      res.setHeader('Content-Disposition', 'attachment; filename=' + videoTitle + '.mp3');
+      res.setHeader('Content-Type', 'audio/mpeg3'); 
+      res.setHeader('Content-Length', info.size);
+    });
+
+    let proc = ffmpeg({source: stream}).withAudioCodec('libmp3lame').toFormat('mp3')
+    
+    let ffstream = proc.pipe();
+
+    ffstream.on('data', data => {
+      res.write(data);
+    });
+
+    ffstream.on('end', () => {
+      res.end();
+    });
   }
 };
 
