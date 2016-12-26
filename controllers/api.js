@@ -29,13 +29,18 @@ const ApiController = {
 
   download (req, res) {
     let videoId = req.params.videoId;
-    let videoTitle = req.params.videoTitle;
     let url = `http://www.youtube.com/watch?v=${videoId}`;
 
     let stream = ytdl(url, ['-f', 'bestaudio']);
 
     stream.on('info', info => {
-      res.setHeader('Content-Disposition', 'attachment; filename=' + videoTitle + '.mp3');
+      let fileNameWithFormat = info._filename;
+
+      let fileNameWithoutFormat = fileNameWithFormat.split('.');
+      fileNameWithoutFormat.pop();
+      fileNameWithoutFormat = fileNameWithoutFormat.join('.');
+
+      res.setHeader('Content-Disposition', 'attachment; filename=' + fileNameWithoutFormat + '.mp3');
       res.setHeader('Content-Type', 'audio/mpeg3'); 
       res.setHeader('Content-Length', info.size);
     });

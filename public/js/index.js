@@ -1,8 +1,11 @@
+var URL = 'http://localhost:3000';
+
 var app = new Vue({
   el: '#app', 
   
   data: {
     title: 'Download some music!',
+    url: URL,
     search: '',
     songs: []
   },
@@ -17,14 +20,6 @@ var app = new Vue({
           console.log(err);
           throw err;
         });
-    },
-
-    downloadSong: function (videoId, videoTitle) {
-      var a = document.createElement("a"); 
-      document.body.appendChild(a);
-      a.style = 'display: none';
-      a.href = 'http://localhost:3000/api/download/mp3/' + videoId + '/' + videoTitle;
-      a.click();
     }
   }
 });

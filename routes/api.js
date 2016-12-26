@@ -8,5 +8,5 @@ module.exports = app => {
   });
 
   app.get('/api/search/:q', apiController.search);
-  app.get('/api/download/mp3/:videoId/:videoTitle', apiController.download);
+  app.get('/api/download/mp3/:videoId', apiController.download);
 };

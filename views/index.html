@@ -16,7 +16,7 @@
         <li v-if="songs.length != 0" v-for="song in songs">
           {{ song.snippet.title }}
           <img :src="song.snippet.thumbnails.medium.url">
-          <button v-on:click="downloadSong(song.id.videoId, song.snippet.title)">Download this song!</button>
+          <button><a :href="url + '/api/download/mp3/' + song.id.videoId">Download this song!</a></button>
         </li>
       </ul>
     </div>
