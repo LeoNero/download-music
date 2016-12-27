@@ -1,4 +1,10 @@
-var URL = 'http://localhost:3000';
+var URL;
+
+if (window.location.hostname === 'localhost') {
+  URL = 'http://localhost';
+} else {
+  URL = 'http://downloadmusic.nerone.me';
+}
 
 var app = new Vue({
   el: '#app', 
@@ -12,7 +18,7 @@ var app = new Vue({
 
   methods: {
     searchMusic: function () {
-      axios.get('http://localhost:3000/api/search/' + this.search)
+      axios.get(this.url + '/api/search/' + this.search)
         .then(function (response) {
           Vue.set(this, 'songs', response.data);
         }.bind(this))
